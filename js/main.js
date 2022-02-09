@@ -1,149 +1,109 @@
 // Add all scripts to the JS folder
-function myFunc(){
-    var mydiv = document.getElementById("mydiv");
-    mydiv.innerHTML = "Hello World.";
-};
-
-//window.onload = myFunc();
-/*function initialize(){
-    cities();
-};
-
-//function to create a table with cities and their populations
-function cities(){
-    //define two arrays for cities and population
-    var cityPop = [
-    {
-        city: 'Madison',
-        population: 233209
-    },
-    {
-        city: 'Milwaukee',
-        population: 594833
-    },
-    {
-        city: 'Green Bay',
-        population: 104057
-    },
-    {
-        city: 'Superior',
-        population: 27244
-    }
-  ];
-
-    //create the table element
-    var table = document.createElement("table");
-
-    //create a header row
-    var headerRow = document.createElement("tr");
-
-    //add the "City" column
-    var cityHeader = document.createElement("th");
-    cityHeader.innerHTML = "City";
-    headerRow.appendChild(cityHeader);
-
-    //add the "Population" column
-    var popHeader = document.createElement("th");
-    popHeader.innerHTML = "Population";
-    headerRow.appendChild(popHeader);
-
-    //add the row to the table
-    table.appendChild(headerRow);
-
-    //loop to add a new row for each city
-    //Example 2.3 line 41...loop to add a new row for each city
-    for (var i = 0; i < cityPop.length; i++){
-        var tr = document.createElement("tr");
-
-        var city = document.createElement("td");
-        //first conditional block
-            if (cityPop[i].city == 'Madison'){
-                city.innerHTML = 'Badgerville';
-            } else if (cityPop[i].city == 'Green Bay'){
-                city.innerHTML = 'Packerville';
-            } else {
-                city.innerHTML = cityPop[i].city;
-            }
-
-            tr.appendChild(city);
-
-            var pop = document.createElement("td");
-        //second conditional block
-            if (cityPop[i].population < 500000){
-                pop.innerHTML = cityPop[i].population;
-            } else {
-                pop.innerHTML = 'Too big!';
-            };
-
-            tr.appendChild(pop);
-
-            table.appendChild(tr);
-        };
-
-
-    //add the table to the div in index.html
-    document.querySelector("#mydiv").insertAdjacentHTML('beforeend',"Hello World!");
-    document.querySelector("#mydiv").appendChild(table);
-    //mydiv.appendChild(table);
-};
-window.onload = initialize();
-*/
-//initialize function called when the script loads
+//Here we initialize a function that contains the other function so we only need one run command
 function initialize(){
-    cities();
+		cities(cityPop);
+    addColumns(cityPop);
+		addEvents();
 };
+//Create a list of the table variables
+var cityPop = [
+	{
+		city: 'Madison',
+		population: 233209
+	},
+	{
+		city: 'Milwaukee',
+		population: 594833
+	},
+	{
+		city: 'Green Bay',
+		population: 104057
+	},
+	{
+		city: 'Superior',
+		population: 27244
+	}
+];
+function cities(cityPop){
 
-//function to create a table with cities and their populations
-function cities(){
-    //define two arrays for cities and population
-    var cityPop = [
-    {
-        city: 'Madison',
-        population: 233209
-    },
-    {
-        city: 'Milwaukee',
-        population: 594833
-    },
-    {
-        city: 'Green Bay',
-        population: 104057
-    },
-    {
-        city: 'Superior',
-        population: 27244
-    }]
-
-    //create the table element
+    //Create the table element
     var table = document.createElement("table");
 
-    //create a header row
+    //Create the header row
     var headerRow = document.createElement("tr");
 
-    //add the "City" and "Population" columns to the header row
+    //Add the "City" and "Population" columns to the header row
     headerRow.insertAdjacentHTML("beforeend","<th>City</th><th>Population</th>")
 
-    //add the row to the table
+    //Add the row to the table
     table.appendChild(headerRow);
 
     //loop to add a new row for each city
     for(var i = 0; i < cityPop.length; i++){
-        //assign longer html strings to a variable
+        //Assign html strings to a variable
         var rowHtml = "<tr><td>" + cityPop[i].city + "</td><td>" + cityPop[i].population + "</td></tr>";
-        //add the row's html string to the table
+        //Add html strings to the table
         table.insertAdjacentHTML('beforeend',rowHtml);
     }
-
+		//Append the table to the mydiv
     document.querySelector("#mydiv").appendChild(table);
-    //document.querySelector('#mydiv').style.color = 'red';
-
-    //change the text size and alignment
-    //document.querySelector('#mydiv').style.fontSize = '2em';
-    //document.querySelector('#mydiv').style.textAlign = 'left';
-
-//get the text color and add it as text to the div
-    //var thecolor = document.querySelector('#mydiv').style.color;
-    //document.querySelector('#mydiv').insertAdjacentHTML('beforeend',thecolor);
 }
+//Function to add a new column
+function addColumns(cityPop){
+		// For rach of the rows
+    document.querySelectorAll("tr").forEach(function(row,i){
+			// Adds to the the header row
+    		if (i === 0){
 
+    		row.insertAdjacentHTML('beforeend', "<th>City Size</th>");
+    	} else {
+				//Add calculate citySize to each variable
+    		var citySize;
+				//Small cities
+    		if (cityPop[i-1].population < 100000){
+    			citySize = 'Small';
+				//Medium City
+    		} else if (cityPop[i-1].population < 500000){
+    			citySize = 'Medium';
+				//Large cities
+    		} else {
+    			citySize = 'Large';
+    		};
+			//Add to each row the citySize variable
+			var rowHtml = "<td>" + citySize + "</td>"
+			row.insertAdjacentHTML('beforeend',rowHtml);
+    	};
+    });
+};
+//Events function
+function addEvents(){
+	//A mouseover event
+	document.querySelector("table").addEventListener("mouseover", function(){
+		//Creates a color variable
+		var Color = 'rgb';
+		//for loop for random colors when mouseover
+		for (var i=0; i<3; i++){
+			//Creates a random color
+			var randomColor = Math.round(Math.random()*16777215).toString(16);
+			//set color to a random color
+			Color = randomColor;
+			//new random color
+			if (i<2){
+				Color = "#" + randomColor;
+			//new random color
+			} else {
+				Color = "#" + randomColor;
+		};
+		//color the table
+		document.querySelector("table").style.color = Color;
+	};
+})
+//A function that defines what happens when click happens
+	function clickme(){
+		alert('Hey, you clicked me!');
+	};
+	//Event listener for click
+	document.querySelector("table").addEventListener("click", clickme);
+};
+// Load all of this to the html
 document.addEventListener('DOMContentLoaded',initialize)
