@@ -4,6 +4,7 @@ function initialize(){
 		cities(cityPop);
     addColumns(cityPop);
 		addEvents();
+    jsAjax();
 };
 //Create a list of the table variables
 var cityPop = [
@@ -105,5 +106,19 @@ function addEvents(){
 	//Event listener for click
 	document.querySelector("table").addEventListener("click", clickme);
 };
+function jsAjax(){
+    //Use Fetch to retrieve data from the data folder
+    fetch('data/MegaCities.geojson')
+        .then(function(response){
+					return response.json();
+				}) //Convert data to usable using an anonymous function form
+        .then(callback) //Send retrieved data to a callback function
+};
+//define callback function for data display
+function callback(response){
+    //Place the json string into my div
+		document.querySelector("#mydiv").insertAdjacentHTML('beforeend', 'GeoJSON data: ' + JSON.stringify(response))
+}
+
 // Load all of this to the html
 document.addEventListener('DOMContentLoaded',initialize)
